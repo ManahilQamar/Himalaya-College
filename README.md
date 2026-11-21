@@ -1,22 +1,117 @@
-# Himalaya Degree College website
+# Himalaya Degree College
 
-MERN stack: `client/` (React, Vite, Tailwind, Framer Motion) and `server/` (Express, MongoDB).
+Website and content management system for Himalaya Degree College.
 
-## Run everything
-1. Server: see `server/README.md` (needs a MongoDB connection string and a JWT_SECRET in `server/.env`).
-2. Client (Node 20.19 or newer):
+The project includes a React frontend, Express API, MongoDB integration, and an admin panel for managing website content.
 
-       cd client
-       cp .env.example .env     # VITE_API_URL=/api  (Vite forwards /api to http://localhost:5000)
-       npm install
-       npm run dev              # http://localhost:5173
+## Project Structure
 
-Putting it online: see `DEPLOYMENT.md`.
+```text
+himalaya-college/
+├── client/          # React frontend
+├── server/          # Express backend
+├── DEPLOYMENT.md
+└── README.md
+```
 
-If `VITE_API_URL` is empty the website runs on its own with built-in placeholder content (forms are not saved).
+## Frontend
 
-## Status
-Stages 1 to 10 done: design system, all public pages, events, contact, backend API and database, admin dashboard with login, security hardening, deployment guide, responsive and accessibility pass.
-Next: SEO and performance (11), final testing (12).
+The frontend is built with:
 
-Admin panel: open `/admin` on the website (not linked from public pages). Create the first admin with `npm run create-admin` in `server/`.
+- React
+- Vite
+- Tailwind CSS
+- Framer Motion
+- React Router
+- Lucide Icons
+
+### Run the frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+The development server runs on:
+
+```text
+http://localhost:5173
+```
+
+For local API configuration, create `client/.env` from `client/.env.example`.
+
+## Backend
+
+The backend is built with:
+
+- Node.js
+- Express
+- MongoDB
+- JWT authentication
+
+### Run the backend
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+The backend requires environment variables for the MongoDB connection and JWT authentication.
+
+Use `server/.env.example` as a reference for the required configuration.
+
+## Admin Panel
+
+The admin panel is available at:
+
+```text
+/admin
+```
+
+It is not linked from the public website.
+
+The admin area provides authenticated access to website content and administrative features.
+
+## Testing
+
+Backend tests are located in:
+
+```text
+server/tests/
+```
+
+Run the backend test suite with:
+
+```bash
+cd server
+npm test
+```
+
+## Production Build
+
+To create a production build of the frontend:
+
+```bash
+cd client
+npm run build
+```
+
+The production files are generated in:
+
+```text
+client/dist/
+```
+
+## Deployment
+
+Deployment instructions are available in:
+
+`DEPLOYMENT.md`
+
+## Environment Files
+
+Environment files containing passwords, database credentials, JWT secrets, or other private values are not committed to the repository.
+
+Use the provided `.env.example` files when setting up the project locally or on a server.
