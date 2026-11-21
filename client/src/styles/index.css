@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    overflow-wrap: anywhere; /* long words and numbers wrap instead of overflowing on small or zoomed screens */
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display font-bold text-navy-900;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 3px solid #D6A84F;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-page px-5 sm:px-8;
+  }
+  .section-y {
+    @apply py-16 sm:py-24;
+  }
+  /* Comfortable touch size on phones and tablets, compact on desktop */
+  .tap {
+    @apply inline-flex items-center;
+    min-height: 24px;
+  }
+  @media (pointer: coarse) {
+    .tap { min-height: 44px; min-width: 44px; }
+  }
+  .skip-link {
+    @apply absolute left-4 top-4 z-[100] -translate-y-24 rounded-md bg-[#173B7A] px-4 py-3 font-semibold text-navy-900 transition-transform focus:translate-y-0;
+  }
+}
+
+
