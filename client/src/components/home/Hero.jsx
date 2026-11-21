@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Building2, CalendarDays, MapPin, Phone, Sparkles } from 'lucide-react';
 import Button from '../ui/Button';
-import useMediaQuery from '../../hooks/useMediaQuery';
 import { HERO } from '../../lib/homeContent';
 
-const HeroNetwork = lazy(() => import('./HeroNetwork'));
+const GhostFibers = lazy(() => import('./GhostFibers'));
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } } };
 const item = {
@@ -22,9 +21,6 @@ const QUICK_LINKS = [
 ];
 
 export default function Hero() {
-  const reduced = useReducedMotion();
-  const desktop = useMediaQuery('(min-width: 1024px)');
-  const showNetwork = desktop && !reduced;
 
   return (
     <section className="relative isolate overflow-hidden bg-navy-900 text-white">
@@ -39,14 +35,29 @@ export default function Hero() {
           maskImage: 'radial-gradient(ellipse at 70% 40%, #000 0%, transparent 70%)',
           WebkitMaskImage: 'radial-gradient(ellipse at 70% 40%, #000 0%, transparent 70%)',
         }}
-      />
-      {showNetwork && (
-        <div className="absolute inset-0 -z-10">
-          <Suspense fallback={null}>
-            <HeroNetwork />
-          </Suspense>
-        </div>
-      )}
+      />      <div className="absolute inset-0 -z-10">
+        <Suspense fallback={null}>
+          <GhostFibers
+      glowColor="#173B7A"
+      lineColor="#D6A84F"
+      secondaryColor="#0B2450"
+      gradient="depth"
+      layers={3}
+      waves={1}
+      twist={1.2}
+      threads={72}
+      fiberStyle="dots"
+      depthOfField={0.85}
+      hoverEffect="focus"
+      intro={true}
+      mouseInteraction={true}
+      brightness={0.7}
+      glow={0.8}
+      sparkle={0.5}
+      particles={0.4}
+    />
+  </Suspense>
+</div>
       {/* keeps text readable over the network */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-navy-900 via-navy-900/85 to-transparent" aria-hidden="true" />
 
@@ -110,5 +121,6 @@ export default function Hero() {
     </section>
   );
 }
+
 
 
