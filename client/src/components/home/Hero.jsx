@@ -42,7 +42,7 @@ export default function Hero() {
       lineColor="#D6A84F"
       secondaryColor="#0B2450"
       gradient="depth"
-      layers={3}
+      layers={4}
       waves={1}
       twist={1.2}
       threads={72}
@@ -51,10 +51,10 @@ export default function Hero() {
       hoverEffect="focus"
       intro={true}
       mouseInteraction={true}
-      brightness={0.7}
-      glow={0.8}
-      sparkle={0.5}
-      particles={0.4}
+      brightness={1.5}
+      glow={3}
+      sparkle={1}
+      particles={2}
     />
   </Suspense>
 </div>
@@ -121,6 +121,9 @@ export default function Hero() {
     </section>
   );
 }
+
+
+
 
 
 
