@@ -8,9 +8,7 @@ export default function MDMessage() {
   const MD = data?.mdMessage ?? DEFAULT_MD;
 
   const message = [
-    'Education is the foundation of a successful and progressive society. At Himalaya Degree College, we are committed to providing quality education in a supportive and inspiring environment where students can develop knowledge, confidence, character, and practical skills for a successful future.',
-  ];
-
+'At Himalaya College of Science and Technology, we believe that quality education plays an important role in shaping a student’s future. Our aim is to provide a supportive and inspiring learning environment where students can build strong academic knowledge, develop confidence and character, and prepare themselves for higher education and successful careers. We encourage our students to learn with dedication, develop practical skills, and become responsible individuals who can contribute positively to their families, communities, and society.', ]
   const vision =
     'To become a leading institution that provides quality education, develops responsible individuals, and prepares students to meet the challenges of the modern world.';
 
@@ -60,7 +58,7 @@ export default function MDMessage() {
 
           {/* MESSAGE */}
           <div>
-            <div className="space-y-4 text-lg text-navy-600">
+            <div className="space-y-4 text-2xl text-navy-600" style={{ fontFamily: 'Work Sans', lineHeight: 1.6 }}>
               {message.map((p) => (
                 <p key={p} className="max-w-prose">
                   {p}
