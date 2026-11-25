@@ -88,6 +88,14 @@ export const listQuerySchema = z.object({
   unread: z.enum(['true', 'false']).optional(),
 });
 
+// Only Google's own embed address is accepted, so a pasted link can never load another site inside the page.
+const mapEmbedUrl = z
+  .string()
+  .trim()
+  .max(600)
+  .refine((v) => v === '' || /^https:\/\/www\.google\.com\/maps\/embed\?[^\s"'<>]+$/.test(v), 'Use the "Embed a map" link from Google Maps (it starts with https://www.google.com/maps/embed)')
+  .default('');
+
 // ---- College information, saved one section at a time ----
 const titleText = z.object({ title: text(150), text: text(600) });
 export const collegeSections = {
@@ -127,6 +135,8 @@ export const collegeSections = {
     email: optionalEmail,
     address: text(250),
     officeHours: text(150),
+    tagline: text(300),
+    mapEmbedUrl,
   }),
 };
 

@@ -14,8 +14,24 @@ const STATUS_ORDER = { Ongoing: 0, Upcoming: 1, Completed: 2 };
 const OBJECT_ID = /^[a-f\d]{24}$/i;
 const byOrder = { order: 1, createdAt: 1 };
 
-export default function publicRoutes({ formLimit = 10 } = {}) {
+const STATIC_PAGES = ['/', '/about', '/services', '/disciplines', '/campuses', '/admissions', '/events', '/contact'];
+const xmlEscape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const real = { isPublished: true, isPlaceholder: { $ne: true } }; // sample content is never offered to search engines
+
+export default function publicRoutes({ formLimit = 10, siteUrl = '' } = {}) {
   const router = Router();
+
+  // Public content: browsers always revalidate (a cheap "304 Not Modified" via ETag), so an admin who saves a change
+  // sees it at once. Only a CDN in front (for example Vercel) may keep a copy for 60 seconds, then refresh it quietly.
+  // That keeps the free API tier fast without making edits look "stuck".
+  router.use(['/college', '/services', '/programs', '/campuses', '/events', '/sitemap.xml'], (req, res, next) => {
+    if (req.method === 'GET') {
+      res.set('Cache-Control', 'public, max-age=0, must-revalidate');
+      res.set('CDN-Cache-Control', 'max-age=60, stale-while-revalidate=300');
+      res.set('Vercel-CDN-Cache-Control', 'max-age=60, stale-while-revalidate=300');
+    }
+    next();
+  });
 
   // Stricter limit on endpoints that write to the database.
   const formLimiter = rateLimit({
@@ -27,6 +43,27 @@ export default function publicRoutes({ formLimit = 10 } = {}) {
   });
 
   router.get('/health', (_req, res) => res.json({ ok: true }));
+
+  router.get('/sitemap.xml', asyncHandler(async (_req, res) => {
+    const [programs, campuses, events] = await Promise.all([
+      Program.find(real).select('slug updatedAt'),
+      Campus.find(real).select('slug updatedAt'),
+      Event.find(real).select('updatedAt'),
+    ]);
+    const entries = [
+      ...STATIC_PAGES.map((p) => ({ path: p, priority: p === '/' ? '1.0' : '0.8' })),
+      ...programs.map((d) => ({ path: `/disciplines/${d.slug}`, lastmod: d.updatedAt, priority: '0.7' })),
+      ...campuses.map((d) => ({ path: `/campuses/${d.slug}`, lastmod: d.updatedAt, priority: '0.7' })),
+      ...events.map((d) => ({ path: `/events/${d.id}`, lastmod: d.updatedAt, priority: '0.5' })),
+    ];
+    const xml = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      ...entries.map((e) => `  <url><loc>${xmlEscape(siteUrl + e.path)}</loc>${e.lastmod ? `<lastmod>${e.lastmod.toISOString().slice(0, 10)}</lastmod>` : ''}<priority>${e.priority}</priority></url>`),
+      '</urlset>',
+    ].join('\n');
+    res.type('application/xml').send(xml);
+  }));
 
   router.get('/college', asyncHandler(async (_req, res) => {
     const doc = await CollegeInformation.findOne({ key: 'main' });

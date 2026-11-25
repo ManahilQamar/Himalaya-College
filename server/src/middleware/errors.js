@@ -27,6 +27,7 @@ export function parse(schema, data) {
 
 // eslint-disable-next-line no-unused-vars
 export function errorHandler(err, _req, res, _next) {
+  res.set('Cache-Control', 'no-store'); // an error must never be cached, or a fixed page would stay "missing"
   let status = err.status || 500;
   let message = err.message;
   let errors = err.errors;
