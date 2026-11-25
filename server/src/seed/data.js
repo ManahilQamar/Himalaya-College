@@ -83,6 +83,8 @@ export const college = {
     email: 'hcst.swabi@yahoo.com',
     address: 'KSK, Razar, Swabi',
     officeHours: '[ADD OFFICE HOURS]',
+    tagline: 'Quality education, modern technology and future-ready skills for every student.',
+    mapEmbedUrl: '',
   },
 };
 

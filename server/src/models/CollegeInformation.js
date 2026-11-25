@@ -52,6 +52,8 @@ const collegeSchema = new mongoose.Schema(
       email: text(150),
       address: text(250),
       officeHours: text(150),
+      tagline: text(300), // short line in the website footer
+      mapEmbedUrl: text(600), // Google Maps "Embed a map" link
     },
   },
   { timestamps: true }

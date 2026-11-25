@@ -12,12 +12,13 @@ import publicRoutes from './routes/public.js';
 export function createApp({
   clientOrigins = env.clientOrigins,
   jwtSecret = env.jwtSecret,
-  formLimit = 10,
-  globalLimit = 1000,
-  loginLimit = 10,
+  formLimit = env.rateLimitForms,
+  globalLimit = env.rateLimitGlobal,
+  loginLimit = env.rateLimitLogin,
   lockoutMax = 5,
   lockoutMs = 15 * 60 * 1000,
   trustProxy = env.trustProxy,
+  siteUrl = env.publicSiteUrl || clientOrigins[0],
 } = {}) {
   const app = express();
   app.disable('x-powered-by');
@@ -44,7 +45,7 @@ export function createApp({
     '/api',
     rateLimit({ windowMs: 15 * 60 * 1000, limit: globalLimit, standardHeaders: 'draft-7', legacyHeaders: false })
   );
-  app.use('/api', publicRoutes({ formLimit }));
+  app.use('/api', publicRoutes({ formLimit, siteUrl }));
   if (jwtSecret) {
     app.use('/api/admin', adminRoutes({ secret: jwtSecret, loginLimit, lockoutMax, lockoutMs }));
   } else {
