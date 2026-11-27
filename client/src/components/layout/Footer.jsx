@@ -43,9 +43,7 @@ export default function Footer() {
       <div className="container-x pt-14">
         <div className="flex flex-col items-start justify-between gap-6 rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/[0.02] p-8 backdrop-blur md:flex-row md:items-center md:p-10">
           <div className="flex items-start gap-4">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#F5C451]/15 text-[#F5C451]">
-              <GraduationCap size={26} aria-hidden="true" />
-            </span>
+            
             <div>
               <h2 className="font-display text-2xl text-white md:text-3xl">
                 Admissions Open
